@@ -1,34 +1,52 @@
 package org.splitbrain.thecashster.model;
 
 import java.util.Date;
+import java.util.UUID;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
+ * Model for a transaction
+ * <p>
+ * This is stored locally until it has been transferred to Google Sheets
+ *
  * @author Andreas Gohr andi@splitbrain.org
  */
-
-public class Transaction {
+@SuppressWarnings("unused")
+public class Transaction extends RealmObject {
+    @PrimaryKey
+    private String txid;
     private Date dt;
-    private float amount;
-    private String place;
-    private String placeId;
+    private float amount = 0.0f;
+    private Place place;
 
+    /**
+     * Constructor
+     * <p>
+     * This is need for the Realm's sake
+     */
     public Transaction() {
-        dt = new Date();
+        this.txid = UUID.randomUUID().toString();
+        this.dt = new Date();
     }
 
-    public Transaction(float amount) {
-        this.amount = amount;
-    }
-
-    public Transaction(float amount, String place) {
-        this.amount = amount;
-        this.place = place;
-    }
-
-    public Transaction(float amount, String place, String placeId) {
+    /**
+     * Constructor
+     * <p>
+     * Preferred way to create a new transaction
+     */
+    public Transaction(float amount, Place place) {
+        this.txid = UUID.randomUUID().toString();
         this.amount = amount;
         this.place = place;
-        this.placeId = placeId;
+        this.dt = new Date();
+    }
+
+    // region default Setter/Getters
+
+    public String getTxid() {
+        return txid;
     }
 
     public Date getDt() {
@@ -47,19 +65,13 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getPlace() {
+    public Place getPlace() {
         return place;
     }
 
-    public void setPlace(String place) {
+    public void setPlace(Place place) {
         this.place = place;
     }
 
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
+    // endregion
 }

@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import org.splitbrain.thecashster.model.Place;
+import org.splitbrain.thecashster.model.Transaction;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -91,7 +92,6 @@ public class EntryActivity extends AppCompatActivity implements
      * to the current amount
      *
      * @param v the button that was pressed
-     * @todo extract the done part into its own method
      */
     public void onButtonPress(View v) {
         Button b = (Button) v;
@@ -112,31 +112,8 @@ public class EntryActivity extends AppCompatActivity implements
                 mNeg *= -1;
                 break;
             case "done":
-                if (getAmount() == 0.0) {
-                    Toast.makeText(getApplicationContext(), "No amount set",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (mAdapter.getSelected() == null) {
-                    mAdapter.selectItem(0);
-                    if (mAdapter.getSelected() == null) {
-                        Toast.makeText(getApplicationContext(), "No place selected",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "First place selected, click done again to confirm",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    return;
-                }
-
-                // save place
-                Realm realm = Realm.getDefaultInstance();
-                realm.beginTransaction();
-                realm.copyToRealmOrUpdate(mAdapter.getSelected());
-                realm.commitTransaction();
-
-                mAmount = "";
-                break;
+                storeTransaction();
+                return; // we're done
             default:
                 if (mAmount.length() < 8) {
                     mAmount = mAmount.concat(b.getText().toString());
@@ -151,11 +128,50 @@ public class EntryActivity extends AppCompatActivity implements
     }
 
     /**
+     * Store a new transaction based on the current amount and place
+     */
+    private void storeTransaction() {
+        Place place = mAdapter.getSelected();
+
+        // check amount and place first
+        if (getAmount() == 0.0) {
+            Toast.makeText(getApplicationContext(), "No amount set",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (place == null) {
+            mAdapter.selectItem(0);
+            if (mAdapter.getSelected() == null) {
+                Toast.makeText(getApplicationContext(), "No place selected",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "First place selected, click done again to confirm",
+                        Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
+        // new Transaction with attached place
+        Transaction tx = new Transaction(getAmount(), place);
+
+        // save place and transaction
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(tx);
+        realm.commitTransaction();
+
+        // FIXME start new task for transfering the data to Google Sheets
+
+        mAmount = "";
+        updateAmountView();
+    }
+
+    /**
      * Get the current amount as float
      *
      * @return the amount
      */
-    protected float getAmount() {
+    private float getAmount() {
         if (mAmount.length() == 0) return 0;
         return Float.parseFloat(mAmount) / 100.0f * mNeg;
     }
@@ -163,7 +179,7 @@ public class EntryActivity extends AppCompatActivity implements
     /**
      * Format the current amount nicely
      */
-    protected void updateAmountView() {
+    private void updateAmountView() {
         float amount = getAmount();
         TextView v = this.findViewById(R.id.textAmount);
         String value = String.format(Locale.US, "%01.2f", amount);
@@ -174,7 +190,7 @@ public class EntryActivity extends AppCompatActivity implements
     /**
      * Update the place list
      */
-    protected void updatePlaceView() {
+    private void updatePlaceView() {
         mAdapter.clear();
         TextView tv = findViewById(R.id.textSearch);
         mAdapter.findNearbyPlaces(mLastLocation, tv.getText().toString());
@@ -201,10 +217,18 @@ public class EntryActivity extends AppCompatActivity implements
         updatePlaceView();
     }
 
+    /**
+     * Handle click on the search button
+     */
     public void onSearchButtonClick(View v) {
         closeKeyboard();
+        mAdapter.clear();
+        mAdapter.findNearbyPlaces(mLastLocation, vTextSearch.getText().toString());
     }
 
+    /**
+     * Close the keyboard
+     */
     private void closeKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
