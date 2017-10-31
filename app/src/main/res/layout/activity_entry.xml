@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.splitbrain.thecashster.EntryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/textSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/buttonSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/btn_search"
+                android:onClick="onSearchButtonClick"
+                />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listPlaces"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:choiceMode="singleChoice" />
+
+        <TextView
+            android:id="@+id/textAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="-100.55" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="*">
+
+            <TableRow
+                style="?android:buttonBarButtonStyle"
+                >
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="7"
+                    tools:ignore="HardcodedText"
+                    />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="8"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="9"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="00"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:tag="del"
+                    android:text="&lt;"
+                    tools:ignore="HardcodedText"
+                    />
+            </TableRow>
+
+            <TableRow style="?android:buttonBarButtonStyle">
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="4"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="5"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="6"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="0"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:tag="neg"
+                    android:text="+/-"
+                    tools:ignore="HardcodedText" />
+            </TableRow>
+
+            <TableRow style="?android:buttonBarButtonStyle">
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="1"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="2"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onButtonPress"
+                    android:text="3"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    style="?android:buttonBarNeutralButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_span="2"
+                    android:onClick="onButtonPress"
+                    android:tag="done"
+                    android:text="Done" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
