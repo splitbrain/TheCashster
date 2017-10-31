@@ -3,6 +3,7 @@ package org.splitbrain.thecashster.sheets;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -24,6 +25,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import org.splitbrain.thecashster.EntryActivity;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +43,13 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
     private OnTaskCompleted mListener;
     private com.google.api.services.sheets.v4.Sheets mService = null;
     private Exception mLastError = null;
-    private EntryActivity mActivity;
+    private WeakReference<EntryActivity> mContextRef;
 
     /**
      * Constructor
      */
     public SheetsTask(EntryActivity act, GoogleAccountCredential credential) {
-        mActivity = act;
+        mContextRef = new WeakReference<>(act);
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
@@ -106,9 +108,9 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
     /**
      * Append data to the spreadsheet
      *
-     * @param docId the document ID
+     * @param docId  the document ID
      * @param values two-dimensional array of cells to append
-     * @throws IOException
+     * @throws IOException when something goes wrong
      */
     private void append(String docId, List<List<Object>> values) throws IOException {
         String range = "A1:B1";
@@ -134,9 +136,12 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
      * @throws IOException when something goes wrong
      */
     private String getOrCreateDocument() throws IOException {
+        Context context = mContextRef.get();
+        if (context == null) throw new IOException("no context available");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
         // get doc from preferences and check it still exists
-        String docID = mActivity.getPreferences(Context.MODE_PRIVATE)
-                .getString(PREF_SHEET_ID, null);
+        String docID = preferences.getString(PREF_SHEET_ID, null);
         if (docID != null) {
             try {
                 mService.spreadsheets().get(docID).execute();
@@ -186,9 +191,7 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
         append(doc.getSpreadsheetId(), getHeaders());
 
         // remember doc ID in preferences
-        SharedPreferences settings =
-                mActivity.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREF_SHEET_ID, doc.getSpreadsheetId());
         editor.apply();
 
@@ -210,12 +213,14 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
     protected void onCancelled() {
         if (mLastError != null) {
             if (mLastError instanceof UserRecoverableAuthIOException) {
-                mActivity.startActivityForResult(
-                        ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                        EntryActivity.REQUEST_AUTHORIZATION);
+                EntryActivity context = mContextRef.get();
+                if (context != null) {
+                    context.startActivityForResult(
+                            ((UserRecoverableAuthIOException) mLastError).getIntent(),
+                            EntryActivity.REQUEST_AUTHORIZATION);
+                }
             }
         }
-
 
         Log.e(TAG, "task was cancelled", mLastError);
     }
