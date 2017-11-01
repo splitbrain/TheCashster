@@ -11,6 +11,10 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -114,6 +118,8 @@ public class EntryActivity extends AppCompatActivity implements
         mCredential = GoogleAccountCredential.usingOAuth2(
                 this, Arrays.asList(SCOPES)
         ).setBackOff(new ExponentialBackOff());
+
+
     }
 
     /**
@@ -125,9 +131,7 @@ public class EntryActivity extends AppCompatActivity implements
      * @param v the button that was pressed
      */
     public void onButtonPress(View v) {
-        Button b = (Button) v;
-
-        String tag = (String) b.getTag();
+        String tag = (String) v.getTag();
         if (tag == null) tag = "";
 
         // haptic feedback
@@ -146,6 +150,7 @@ public class EntryActivity extends AppCompatActivity implements
                 storeTransaction();
                 return; // we're done
             default:
+                Button b = (Button) v;
                 String key = b.getText().toString();
                 if ((key.equals("0") || key.equals("00")) && getAmount() == 0.0) {
                     return; // don't add zeros to a zero
@@ -161,6 +166,11 @@ public class EntryActivity extends AppCompatActivity implements
         }
 
         updateAmountView();
+    }
+
+    public void onMenuButtonPress(View v) {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 
     /**

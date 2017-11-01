@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="org.splitbrain.thecashster.EntryActivity">
 
     <LinearLayout
@@ -50,6 +52,7 @@
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/menu"
+                android:onClick="onMenuButtonPress"
                 android:paddingBottom="4dp"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
@@ -70,8 +73,8 @@
                 android:paddingTop="4dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/white"
-                tools:text="-100.55"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"
+                tools:text="-100.55" />
         </RelativeLayout>
 
         <TableLayout
@@ -113,14 +116,17 @@
                     android:text="00"
                     tools:ignore="HardcodedText" />
 
-                <Button
+                <ImageButton
                     style="?android:buttonBarNeutralButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/backspace"
                     android:onClick="onButtonPress"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:src="@drawable/backspace"
                     android:tag="del"
-                    android:text="&lt;"
-                    tools:ignore="HardcodedText" />
+                    android:tint="@color/colorAccent" />
             </TableRow>
 
             <TableRow style="?android:buttonBarButtonStyle">
@@ -157,13 +163,18 @@
                     android:text="0"
                     tools:ignore="HardcodedText" />
 
-                <Button
+                <ImageButton
                     style="?android:buttonBarNeutralButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="+/-"
                     android:onClick="onButtonPress"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:src="@drawable/exposure"
                     android:tag="neg"
                     android:text="+/-"
+                    android:tint="@color/colorAccent"
                     tools:ignore="HardcodedText" />
             </TableRow>
 
@@ -200,7 +211,8 @@
                     android:layout_span="2"
                     android:onClick="onButtonPress"
                     android:tag="done"
-                    android:text="Done" />
+                    android:text="@string/done"
+                    android:textStyle="bold" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

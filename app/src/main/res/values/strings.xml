@@ -3,4 +3,8 @@
     <string name="btn_search">Search</string>
     <string name="menu">Menu</string>
     <string name="select_place">Select Place</string>
+    <string name="menu_about">About</string>
+    <string name="backspace">backspace</string>
+    <string name="done">Done</string>
+    <string name="about">About</string>
 </resources>
