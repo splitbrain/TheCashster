@@ -23,11 +23,16 @@ import com.google.api.services.sheets.v4.model.UpdateSpreadsheetPropertiesReques
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import org.splitbrain.thecashster.EntryActivity;
+import org.splitbrain.thecashster.model.Transaction;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * @author Andreas Gohr andi@splitbrain.org
@@ -59,29 +64,49 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
                 .build();
     }
 
+    /**
+     * Do the work
+     */
     @Override
     protected SheetsTask doInBackground(Void... voids) {
-//        Realm realm = Realm.getDefaultInstance();
-//        RealmResults<Transaction> transactions = realm.where(Transaction.class).findAll();
-//        for (Transaction tx : transactions) {
-//            Log.i(TAG, tx.getDt().toString());
-//        }
-
-        Log.i(TAG, "Sync task started");
-
         try {
-            //testing();
             String docId = getOrCreateDocument();
-            Log.i(TAG, "DocID aquired: ".concat(docId));
-
-            // fixme get all pending transactions, append them and then delete them locally
-
+            transferTransactions(docId);
         } catch (IOException e) {
             mLastError = e;
             cancel(true);
         }
-
         return this;
+    }
+
+    /**
+     * Transfers all pending transactions and deletes them locally
+     *
+     * @param docId The ID of the spreadsheet
+     * @throws IOException when something goes wrong
+     */
+    private void transferTransactions(String docId) throws IOException {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+
+        RealmResults<Transaction> transactions = realm.where(Transaction.class)
+                .findAllSorted("dt", Sort.ASCENDING);
+        List<List<Object>> values = new ArrayList<>();
+        for (Transaction tx : transactions) {
+            List<Object> row = new ArrayList<>();
+            row.add(tx.getTxid());
+            row.add(tx.getAmount());
+            row.add(android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", tx.getDt()));
+            row.add(tx.getPlace().getName());
+            row.add(tx.getPlace().getForeign());
+            row.add(tx.getPlace().getLat());
+            row.add(tx.getPlace().getLon());
+            values.add(row);
+        }
+        transactions.deleteAllFromRealm();
+        realm.commitTransaction();
+
+        append(docId, values);
     }
 
     /**
@@ -195,7 +220,6 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
         editor.putString(PREF_SHEET_ID, doc.getSpreadsheetId());
         editor.apply();
 
-        Log.i(TAG, doc.getSpreadsheetId());
         return doc.getSpreadsheetId();
     }
 
