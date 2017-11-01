@@ -196,7 +196,7 @@ public class EntryActivity extends AppCompatActivity implements
         realm.copyToRealmOrUpdate(tx);
         realm.commitTransaction();
 
-        // FIXME start new task for transfering the data to Google Sheets
+        // start new task for transferring the data to Google Sheets
         startSheetsSync();
 
         // reset the interface

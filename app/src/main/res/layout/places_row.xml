@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:padding="6dip">
 
     <RadioButton
         android:id="@+id/radioSelect"
@@ -10,36 +11,36 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
-        android:contentDescription="TODO"
+        android:layout_marginEnd="8dip"
         android:checked="false"
-        android:focusable="false"
         android:clickable="false"
-        />
+        android:contentDescription="@string/select_place"
+        android:focusable="false" />
 
     <TextView
         android:id="@+id/secondLine"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/radioSelect"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/radioSelect"
         android:ellipsize="marquee"
-        android:maxLines="1"
-        android:text="Description"
-        android:textSize="12sp" />
+        android:singleLine="true"
+        android:textSize="12sp"
+        tools:text="Description" />
 
     <TextView
         android:id="@+id/firstLine"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/secondLine"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/radioSelect"
+        android:layout_toEndOf="@id/radioSelect"
         android:gravity="center_vertical"
-        android:text="Example application"
-        android:textSize="16sp" />
+        android:singleLine="true"
+        android:textSize="16sp"
+        tools:text="This is some fancy place" />
 
 </RelativeLayout>
