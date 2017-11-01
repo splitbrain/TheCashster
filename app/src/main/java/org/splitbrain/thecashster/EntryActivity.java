@@ -10,6 +10,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.Gravity;
@@ -77,7 +78,6 @@ public class EntryActivity extends AppCompatActivity implements
     @BindView(R.id.buttonSearch)
     Button vButtonSearch;
 
-
     /**
      * Initialize the activity
      */
@@ -99,6 +99,16 @@ public class EntryActivity extends AppCompatActivity implements
                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 if (vibe != null) vibe.vibrate(20);
                 closeKeyboard();
+            }
+        });
+
+        // pull to refresh location
+        final SwipeRefreshLayout swipeRefresh = findViewById(R.id.swipeRefresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                locationUpdate();
+                swipeRefresh.setRefreshing(false);
             }
         });
 

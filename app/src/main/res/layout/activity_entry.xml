@@ -33,12 +33,19 @@
                 android:text="@string/btn_search" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listPlaces"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:choiceMode="singleChoice" />
+            android:layout_weight="2">
+
+            <ListView
+                android:id="@+id/listPlaces"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:choiceMode="singleChoice" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -22,4 +22,15 @@ public class AboutActivity extends AppCompatActivity {
         wv.loadUrl("file:///android_asset/about.html");
     }
 
+
+    /**
+     * finish the activity when the up button it pressed
+     *
+     * @link https://stackoverflow.com/a/47063857/172068
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }
