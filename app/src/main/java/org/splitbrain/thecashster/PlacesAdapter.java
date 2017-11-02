@@ -233,4 +233,10 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         super.clear();
         mSelected = -1;
     }
+
+    @Override
+    public void remove(@Nullable Place object) {
+        super.remove(object);
+        mSelected = -1;
+    }
 }

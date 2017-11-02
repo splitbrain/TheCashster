@@ -100,7 +100,7 @@ public class ClearableEditText extends android.support.v7.widget.AppCompatEditTe
                     showClearButton = false;
                     requestFocus();
                     if (clearTextListener != null) {
-                        clearTextListener.onTextCleared();
+                        clearTextListener.onTextCleared(this);
                     }
                 }
                 return true;
@@ -110,6 +110,6 @@ public class ClearableEditText extends android.support.v7.widget.AppCompatEditTe
     }
 
     public interface ClearTextListener {
-        void onTextCleared();
+        void onTextCleared(ClearableEditText view);
     }
 }

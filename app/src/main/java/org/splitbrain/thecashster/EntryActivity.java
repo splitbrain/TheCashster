@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -71,7 +73,7 @@ public class EntryActivity extends AppCompatActivity implements
 
     // views
     @BindView(R.id.textSearch)
-    TextView vTextSearch;
+    ClearableEditText vTextSearch;
     @BindView(R.id.buttonSearch)
     Button vButtonSearch;
     @BindView(R.id.layoutNumberPad)
@@ -93,18 +95,11 @@ public class EntryActivity extends AppCompatActivity implements
         final ListView listview = findViewById(R.id.listPlaces);
         mAdapter = new PlacesAdapter(this, new ArrayList<Place>());
         listview.setAdapter(mAdapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mAdapter.selectItem(i);
-                // haptic feedback
-                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                if (vibe != null) vibe.vibrate(20);
-                closeKeyboard();
-            }
-        });
+        ListViewHandler lvh = new ListViewHandler();
+        listview.setOnItemClickListener(lvh);
+        listview.setOnItemLongClickListener(lvh);
 
-        // pull to refresh location
+        // pull to refresh
         final SwipeRefreshLayout swipeRefresh = findViewById(R.id.swipeRefresh);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -114,26 +109,11 @@ public class EntryActivity extends AppCompatActivity implements
             }
         });
 
-        // hide numbers on search entry
-        vTextSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    vLayoutNumberPad.setVisibility(View.GONE);
-                } else {
-                    vLayoutNumberPad.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        // handle the "enter" press on the keyboard
-        vTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                onSearchButtonClick(textView);
-                return true;
-            }
-        });
+        // attach handlers to the search text field
+        SearchTextHandler sth = new SearchTextHandler();
+        vTextSearch.setOnFocusChangeListener(sth);
+        vTextSearch.setOnEditorActionListener(sth);
+        vTextSearch.setClearTextListener(sth);
 
         // initialize display
         updateAmountView();
@@ -410,6 +390,100 @@ public class EntryActivity extends AppCompatActivity implements
             imm.hideSoftInputFromWindow(vTextSearch.getWindowToken(), 0);
         }
         vActivityEntry.requestFocus();
+    }
+
+    /**
+     * Handlers for the ListView
+     */
+    private class ListViewHandler implements
+            AdapterView.OnItemClickListener,
+            AdapterView.OnItemLongClickListener {
+
+        /**
+         * Slect place on click
+         */
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            mAdapter.selectItem(i);
+            // haptic feedback
+            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            if (vibe != null) vibe.vibrate(20);
+            closeKeyboard();
+        }
+
+        /**
+         * Delete local places on long press
+         */
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            final Place item = mAdapter.getItem(i);
+            if (!item.isLocal()) return false;
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(EntryActivity.this);
+            alert.setTitle("Delete " + item.getName());
+            alert.setMessage("Are you sure you want to delete this place?");
+            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    item.deleteFromRealm();
+                    realm.commitTransaction();
+                    mAdapter.remove(item);
+                    dialog.dismiss();
+                }
+            });
+            alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alert.show();
+            return true;
+        }
+    }
+
+
+    /**
+     * Handlers for the search field
+     */
+    private class SearchTextHandler implements
+            View.OnFocusChangeListener,
+            TextView.OnEditorActionListener,
+            ClearableEditText.ClearTextListener {
+
+        /**
+         * hide numbers while searching
+         */
+        @Override
+        public void onFocusChange(View view, boolean b) {
+            if (b) {
+                vLayoutNumberPad.setVisibility(View.GONE);
+            } else {
+                vLayoutNumberPad.setVisibility(View.VISIBLE);
+            }
+        }
+
+        /**
+         * search when pressing "enter" on the keyboard
+         */
+
+        @Override
+        public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            onSearchButtonClick(textView);
+            return true;
+        }
+
+        /**
+         * Search again when the field is cleared
+         */
+        @Override
+        public void onTextCleared(ClearableEditText view) {
+            onSearchButtonClick(view);
+        }
     }
 
 
