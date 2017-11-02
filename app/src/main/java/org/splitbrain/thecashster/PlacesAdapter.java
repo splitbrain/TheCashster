@@ -105,7 +105,18 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         // load our own places here
         loadLocalPlaces(location);
 
+        LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+        FourSquareTask fst = new FourSquareTask(ll, filter);
+        fst.setOnTaskCompleted(new AsyncHandlerTask.OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(AsyncHandlerTask task) {
+                addAll(((FourSquareTask) task).getPlaces());
+            }
+        });
+        fst.execute();
 
+
+/*
         // fixme we probably want to replace this with the PlacesSearch API or the foursquare API
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(mContext, null);
         Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(null);
@@ -130,6 +141,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
                 likelyPlaces.release();
             }
         });
+        */
     }
 
     /**

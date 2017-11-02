@@ -22,6 +22,7 @@ import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import com.google.api.services.sheets.v4.model.UpdateSpreadsheetPropertiesRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+import org.splitbrain.thecashster.AsyncHandlerTask;
 import org.splitbrain.thecashster.EntryActivity;
 import org.splitbrain.thecashster.model.Transaction;
 
@@ -38,14 +39,13 @@ import io.realm.Sort;
  * @author Andreas Gohr andi@splitbrain.org
  */
 
-public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
+public class SheetsTask extends AsyncHandlerTask<Void, Void> {
     // for logging
     private final String TAG = this.getClass().getSimpleName();
     // the preference that holds our google sheets document ID
     private static final String PREF_SHEET_ID = "sheetID";
     private static final String SHEET_TITLE = "TheCashster";
 
-    private OnTaskCompleted mListener;
     private com.google.api.services.sheets.v4.Sheets mService = null;
     private Exception mLastError = null;
     private WeakReference<EntryActivity> mContextRef;
@@ -248,33 +248,4 @@ public class SheetsTask extends AsyncTask<Void, Void, SheetsTask> {
 
         Log.e(TAG, "task was cancelled", mLastError);
     }
-
-    // region OnTaskCompleted handling
-
-    /**
-     * Interface for TaskCompleted mListener
-     */
-    public interface OnTaskCompleted {
-        void onTaskCompleted(SheetsTask task);
-    }
-
-    /**
-     * Attach callback to be notified when task completed
-     */
-    public void setOnTaskCompleted(OnTaskCompleted listener) {
-        mListener = listener;
-    }
-
-    /**
-     * Call mListener
-     *
-     * @param task this class
-     */
-    protected void onPostExecute(SheetsTask task) {
-        if (mListener != null) {
-            mListener.onTaskCompleted(task);
-        }
-    }
-
-    // endregion
 }
