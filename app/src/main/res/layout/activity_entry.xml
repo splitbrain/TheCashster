@@ -13,27 +13,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="horizontal">
 
-            <EditText
-                android:imeOptions="actionSearch"
+            <org.splitbrain.thecashster.ClearableEditText
                 android:id="@+id/textSearch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/buttonSearch"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/buttonSearch"
+                android:imeOptions="actionSearch"
                 android:inputType="textPersonName" />
 
             <Button
                 android:id="@+id/buttonSearch"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
                 android:onClick="onSearchButtonClick"
                 android:text="@string/btn_search" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"

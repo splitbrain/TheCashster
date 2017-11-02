@@ -126,6 +126,7 @@ public class EntryActivity extends AppCompatActivity implements
             }
         });
 
+        // handle the "enter" press on the keyboard
         vTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
