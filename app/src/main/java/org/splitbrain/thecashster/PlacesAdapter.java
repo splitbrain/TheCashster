@@ -141,6 +141,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         RealmResults<Place> results = query.findAllSorted("lastused", Sort.DESCENDING);
         for (Place result : results) {
             result.setLocal(true);
+            result.setDistanceFrom(ll);
             add(result);
         }
     }
@@ -182,7 +183,10 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         String info = item.getAddress()
                 .concat(" [")
                 .concat(item.getCategory())
-                .concat("]");
+                .concat("]")
+                .concat(" ")
+                .concat(String.valueOf(item.getDistance()))
+                .concat("m");
 
         TextView first = rowView.findViewById(R.id.firstLine);
         first.setText(item.getName());

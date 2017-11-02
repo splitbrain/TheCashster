@@ -12,6 +12,8 @@ import io.realm.annotations.Ignore;
 import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
 
+import static java.lang.Math.round;
+
 /**
  * Model for a single place. We keep used places stored locally for
  * fast display when using them again
@@ -34,6 +36,8 @@ public class Place extends RealmObject {
 
     @Ignore
     private Boolean local = false;
+    @Ignore
+    private int distance = 0;
 
 
     public Place() {
@@ -79,6 +83,31 @@ public class Place extends RealmObject {
     public void setLatLng(LatLng ll) {
         this.lat = ll.latitude;
         this.lon = ll.longitude;
+    }
+
+    /**
+     * Set the distance property by calculating it from the given point
+     */
+    public void setDistanceFrom(LatLng ll) {
+        LatLng self = new LatLng(lat, lon);
+        distance = calculateDistance(self, ll);
+    }
+
+    /**
+     * Calculate the distance between the given points in meters
+     *
+     * @link https://stackoverflow.com/a/8550740/172068
+     */
+    private static int calculateDistance(LatLng ll1, LatLng ll2) {
+        final int earthRadius = 6371;
+
+        float dLat = (float) Math.toRadians(ll2.latitude - ll1.latitude);
+        float dLon = (float) Math.toRadians(ll2.longitude - ll1.longitude);
+        float a =
+                (float) (Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(ll1.latitude))
+                        * Math.cos(Math.toRadians(ll2.latitude)) * Math.sin(dLon / 2) * Math.sin(dLon / 2));
+        float c = (float) (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+        return round(earthRadius * c * 1000);
     }
 
     // region Default Setter/Getter
@@ -151,6 +180,14 @@ public class Place extends RealmObject {
 
     public void setLocal(Boolean local) {
         this.local = local;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     // endregion

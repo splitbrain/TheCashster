@@ -28,10 +28,12 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
     private Exception mLastError = null;
     private URL mURL;
     private ArrayList<Place> mPlaces;
+    private LatLng mLocation;
 
 
     FourSquareTask(String clientId, String secret, LatLng ll, String filter) {
         mPlaces = new ArrayList<>();
+        mLocation = ll;
 
         Uri uri = new Uri.Builder()
                 .scheme("https")
@@ -108,6 +110,7 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
                 place.setCategory(cat.getJSONObject(0).getString("shortName"));
             place.setLat(loc.getDouble("lat"));
             place.setLon(loc.getDouble("lng"));
+            place.setDistanceFrom(mLocation);
 
             mPlaces.add(place);
         }
