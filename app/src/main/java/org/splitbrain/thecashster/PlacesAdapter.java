@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -164,6 +165,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
 
         RealmResults<Place> results = query.findAllSorted("lastused", Sort.DESCENDING);
         for (Place result : results) {
+            result.setLocal(true);
             add(result);
         }
     }
@@ -215,6 +217,13 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
 
         RadioButton radio = rowView.findViewById(R.id.radioSelect);
         radio.setChecked(mSelected == position);
+
+        ImageView star = rowView.findViewById(R.id.imageStar);
+        if (item.isLocal()) {
+            star.setVisibility(View.VISIBLE);
+        } else {
+            star.setVisibility(View.GONE);
+        }
 
         return rowView;
     }

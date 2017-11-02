@@ -7,4 +7,5 @@
     <string name="backspace">backspace</string>
     <string name="done">Done</string>
     <string name="about">About</string>
+    <string name="saved_result">saved result</string>
 </resources>

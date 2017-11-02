@@ -43,4 +43,15 @@
         android:textSize="16sp"
         tools:text="This is some fancy place" />
 
+    <ImageView
+        android:id="@+id/imageStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/saved_result"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:src="@drawable/star"
+        android:tint="@color/colorPrimaryLight" />
 </RelativeLayout>
