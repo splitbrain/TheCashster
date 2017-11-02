@@ -38,6 +38,8 @@ public class Place extends RealmObject {
     private Boolean local = false;
     @Ignore
     private int distance = 0;
+    @Ignore
+    private String info = "";
 
 
     public Place() {
@@ -188,6 +190,14 @@ public class Place extends RealmObject {
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     // endregion

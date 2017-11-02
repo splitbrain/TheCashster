@@ -96,13 +96,14 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
 
         // load our own places here
         loadLocalPlaces(location, filter);
+        addCustomPlace(location, filter);
         loadFoursquarePlaces(location, filter);
     }
 
     /**
      * Load matching nearby places from foursquare
      */
-    private void loadFoursquarePlaces(Location location, String filter) {
+    private void loadFoursquarePlaces(final Location location, final String filter) {
         LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
         FourSquareTask fst = new FourSquareTask(
                 mContext.getResources().getString(R.string.FourSquareClientID),
@@ -146,6 +147,20 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         }
     }
 
+    /**
+     * Adds a custom place
+     */
+    private void addCustomPlace(Location ll, String filter) {
+        if(filter.length() == 0) return;
+
+        Place custom = new Place();
+        custom.setCategory("Custom");
+        custom.setLat(ll.getLatitude());
+        custom.setLon(ll.getLongitude());
+        custom.setName(filter);
+        custom.setInfo("Create new Place");
+        add(custom);
+    }
 
     /**
      * Creates a bounding box around the given location
@@ -180,13 +195,16 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         Place item = getItem(position);
         assert item != null;
 
-        String info = item.getAddress()
-                .concat(" [")
-                .concat(item.getCategory())
-                .concat("]")
-                .concat(" ")
-                .concat(String.valueOf(item.getDistance()))
-                .concat("m");
+        String info = item.getInfo();
+        if (info.length() == 0) {
+            info = item.getAddress()
+                    .concat(" [")
+                    .concat(item.getCategory())
+                    .concat("]")
+                    .concat(" ")
+                    .concat(String.valueOf(item.getDistance()))
+                    .concat("m");
+        }
 
         TextView first = rowView.findViewById(R.id.firstLine);
         first.setText(item.getName());
