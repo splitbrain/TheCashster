@@ -126,8 +126,8 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
                     Place place = new Place();
                     place.setName(placeLikelihood.getPlace().getName().toString());
                     place.setLatLng(placeLikelihood.getPlace().getLatLng());
-                    place.setInfo(placeLikelihood.getPlace().getAddress().toString());
-                    place.setForeign(placeLikelihood.getPlace().getId());
+                    place.setAddress(placeLikelihood.getPlace().getAddress().toString());
+                    place.setFoursquare(placeLikelihood.getPlace().getId());
 
                     if (mItems.contains(place)) {
                         Log.d("me", "place already there");
@@ -203,11 +203,16 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         Place item = getItem(position);
         assert item != null;
 
+        String info = item.getAddress()
+                .concat(" [")
+                .concat(item.getCategory())
+                .concat("]");
+
         TextView first = rowView.findViewById(R.id.firstLine);
         first.setText(item.getName());
 
         TextView second = rowView.findViewById(R.id.secondLine);
-        second.setText(item.getInfo());
+        second.setText(info);
 
         RadioButton radio = rowView.findViewById(R.id.radioSelect);
         radio.setChecked(mSelected == position);

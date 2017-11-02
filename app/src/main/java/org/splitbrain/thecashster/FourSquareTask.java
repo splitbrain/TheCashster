@@ -100,12 +100,12 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
             JSONObject loc = venue.getJSONObject("location");
             JSONArray cat = venue.getJSONArray("categories");
 
-            place.setForeign(venue.getString("id"));
+            place.setFoursquare(venue.getString("id"));
             place.setName(venue.getString("name"));
             if (loc.has("address"))
-                place.setInfo(loc.getString("address"));
+                place.setAddress(loc.getString("address"));
             if (cat.length() > 0 && cat.getJSONObject(0).has("shortName"))
-                place.setInfo(cat.getJSONObject(0).getString("shortName"));
+                place.setCategory(cat.getJSONObject(0).getString("shortName"));
             place.setLat(loc.getDouble("lat"));
             place.setLon(loc.getDouble("lng"));
 

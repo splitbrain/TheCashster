@@ -2,7 +2,6 @@ package org.splitbrain.thecashster.sheets;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -98,7 +97,9 @@ public class SheetsTask extends AsyncHandlerTask<Void, Void> {
             row.add(tx.getAmount());
             row.add(android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", tx.getDt()));
             row.add(tx.getPlace().getName());
-            row.add(tx.getPlace().getForeign());
+            row.add(tx.getPlace().getAddress());
+            row.add(tx.getPlace().getCategory());
+            row.add(tx.getPlace().getFoursquare());
             row.add(tx.getPlace().getLat());
             row.add(tx.getPlace().getLon());
             values.add(row);
@@ -122,7 +123,9 @@ public class SheetsTask extends AsyncHandlerTask<Void, Void> {
         row.add("Amount");
         row.add("Date");
         row.add("Place");
-        row.add("ForeignID");
+        row.add("Address");
+        row.add("Category");
+        row.add("FoursquareID");
         row.add("Latitude");
         row.add("Longitude");
         values.add(row);

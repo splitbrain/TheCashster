@@ -23,12 +23,13 @@ public class Place extends RealmObject {
     @PrimaryKey
     private String id = "";
     private String name = "";
-    private String foreign = "";
+    private String foursquare = "";
     private Double lat = 0.0;
     private Double lon = 0.0;
     @Index
     private Date lastused;
-    private String info = "";
+    private String address = "";
+    private String category = "";
 
 
     public Place() {
@@ -38,11 +39,11 @@ public class Place extends RealmObject {
     /**
      * Recalculates the primary key
      * <p>
-     * The primary key is a MD5 hash of either the name or the foreign identifier
+     * The primary key is a MD5 hash of either the name or the foursquare identifier
      */
     private void updateId() {
         String s = name;
-        if (!foreign.isEmpty()) s = foreign;
+        if (!foursquare.isEmpty()) s = foursquare;
 
         try {
             // Create MD5 Hash
@@ -91,12 +92,12 @@ public class Place extends RealmObject {
         updateId();
     }
 
-    public String getForeign() {
-        return foreign;
+    public String getFoursquare() {
+        return foursquare;
     }
 
-    public void setForeign(String foreign) {
-        this.foreign = foreign;
+    public void setFoursquare(String foursquare) {
+        this.foursquare = foursquare;
         updateId();
     }
 
@@ -116,12 +117,12 @@ public class Place extends RealmObject {
         this.lon = lon;
     }
 
-    public String getInfo() {
-        return info;
+    public String getAddress() {
+        return address;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Date getLastused() {
@@ -130,6 +131,14 @@ public class Place extends RealmObject {
 
     public void setLastused(Date lastused) {
         this.lastused = lastused;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     // endregion
