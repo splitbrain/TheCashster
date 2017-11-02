@@ -6,17 +6,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
-import android.view.Gravity;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -78,6 +74,11 @@ public class EntryActivity extends AppCompatActivity implements
     TextView vTextSearch;
     @BindView(R.id.buttonSearch)
     Button vButtonSearch;
+    @BindView(R.id.layoutNumberPad)
+    View vLayoutNumberPad;
+    @BindView(R.id.activityEntry)
+    View vActivityEntry;
+
 
     /**
      * Initialize the activity
@@ -110,6 +111,26 @@ public class EntryActivity extends AppCompatActivity implements
             public void onRefresh() {
                 locationUpdate();
                 swipeRefresh.setRefreshing(false);
+            }
+        });
+
+        // hide numbers on search entry
+        vTextSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    vLayoutNumberPad.setVisibility(View.GONE);
+                } else {
+                    vLayoutNumberPad.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        vTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                onSearchButtonClick(textView);
+                return true;
             }
         });
 
@@ -225,10 +246,10 @@ public class EntryActivity extends AppCompatActivity implements
         updateAmountView();
     }
 
-
+    /**
+     * Start transferring the stored transactions
+     */
     private void startSheetsSync() {
-        // fixme check for network connectivity first
-
         if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
             return;
@@ -387,6 +408,7 @@ public class EntryActivity extends AppCompatActivity implements
         if (imm != null) {
             imm.hideSoftInputFromWindow(vTextSearch.getWindowToken(), 0);
         }
+        vActivityEntry.requestFocus();
     }
 
 
