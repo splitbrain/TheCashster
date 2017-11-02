@@ -21,6 +21,9 @@ static def getCurrentGitHash() {
 
 
 android {
+    def props = new Properties()
+    props.load(new FileInputStream(System.getProperty("user.home") + "/Dropbox/AndroidKeystore/TheCashster.properties"))
+
     compileSdkVersion 26
     defaultConfig {
         applicationId "org.splitbrain.thecashster"
@@ -29,12 +32,23 @@ android {
         versionCode getNumberOfGitCommits()
         versionName "1.0"
         resValue "string", "app_git_hash", getCurrentGitHash()
+        resValue "string", "FourSquareClientID", props.getProperty("FourSquareClientID")
+        resValue "string", "FourSquareClientSecret", props.getProperty("FourSquareClientSecret")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file(System.getProperty("user.home") + "/Dropbox/AndroidKeystore/android.keystore")
+            storePassword props.getProperty("keyStorePassword")
+            keyAlias props.getProperty("keyAlias")
+            keyPassword props.getProperty("keyAliasPassword")
+
         }
     }
 }

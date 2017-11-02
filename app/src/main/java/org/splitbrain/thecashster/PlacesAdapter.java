@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.maps.android.SphericalUtil;
 
 import org.splitbrain.thecashster.model.Place;
@@ -106,7 +99,12 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         loadLocalPlaces(location);
 
         LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-        FourSquareTask fst = new FourSquareTask(ll, filter);
+        FourSquareTask fst = new FourSquareTask(
+                mContext.getResources().getString(R.string.FourSquareClientID),
+                mContext.getResources().getString(R.string.FourSquareClientSecret),
+                ll,
+                filter
+        );
         fst.setOnTaskCompleted(new AsyncHandlerTask.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(AsyncHandlerTask task) {
@@ -175,10 +173,10 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
     /**
      * Creates a bounding box around the given location
      *
-     * @param center the current location
+     * @param center         the current location
      * @param radiusInMeters the distance from that location to make the bounding box
-     * @link https://stackoverflow.com/a/31029389/172068
      * @return the bounding box
+     * @link https://stackoverflow.com/a/31029389/172068
      */
     @NonNull
     private LatLngBounds toBounds(LatLng center, double radiusInMeters) {
@@ -192,6 +190,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
 
     /**
      * Create the view for each row of places
+     *
      * @todo implement viewholder pattern
      */
     @NonNull

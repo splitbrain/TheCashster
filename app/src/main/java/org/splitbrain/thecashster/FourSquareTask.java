@@ -25,15 +25,12 @@ import java.util.ArrayList;
 
 public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
 
-    static final String CLIENT_ID = "VU35SKMGKWH2VELZS0B4UG15KCUF1CXXVLZXBVYLWCT5JYLV";
-    static final String CLIENT_SECRET = "BRFJHRFMOAX432SFPQDMYHHEHXHA3PQEK4TNXNT5V2D5T2JA";
-
     private Exception mLastError = null;
     private URL mURL;
     private ArrayList<Place> mPlaces;
 
 
-    FourSquareTask(LatLng ll, String filter) {
+    FourSquareTask(String clientId, String secret, LatLng ll, String filter) {
         mPlaces = new ArrayList<>();
 
         Uri uri = new Uri.Builder()
@@ -42,8 +39,8 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
                 .appendPath("v2")
                 .appendPath("venues")
                 .appendPath("search")
-                .appendQueryParameter("client_id", CLIENT_ID)
-                .appendQueryParameter("client_secret", CLIENT_SECRET)
+                .appendQueryParameter("client_id", clientId)
+                .appendQueryParameter("client_secret", secret)
                 .appendQueryParameter("v", "20171101")
                 .appendQueryParameter("ll", ll.latitude + "," + ll.longitude)
                 .appendQueryParameter("query", filter)
