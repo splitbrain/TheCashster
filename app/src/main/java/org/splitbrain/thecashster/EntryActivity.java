@@ -32,7 +32,7 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 
 import org.splitbrain.thecashster.model.Place;
 import org.splitbrain.thecashster.model.Transaction;
-import org.splitbrain.thecashster.sheets.SheetsTask;
+import org.splitbrain.thecashster.Tasks.SheetsTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;

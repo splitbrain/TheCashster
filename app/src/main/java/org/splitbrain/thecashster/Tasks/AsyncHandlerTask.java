@@ -1,4 +1,4 @@
-package org.splitbrain.thecashster;
+package org.splitbrain.thecashster.Tasks;
 
 import android.os.AsyncTask;
 

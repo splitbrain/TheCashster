@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.SphericalUtil;
 
+import org.splitbrain.thecashster.Tasks.AsyncHandlerTask;
+import org.splitbrain.thecashster.Tasks.FourSquareTask;
 import org.splitbrain.thecashster.model.Place;
 
 import java.util.ArrayList;

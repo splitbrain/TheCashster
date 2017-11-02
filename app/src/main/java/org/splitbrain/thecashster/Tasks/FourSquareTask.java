@@ -1,4 +1,4 @@
-package org.splitbrain.thecashster;
+package org.splitbrain.thecashster.Tasks;
 
 import android.net.Uri;
 import android.util.Log;
@@ -31,7 +31,7 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
     private LatLng mLocation;
 
 
-    FourSquareTask(String clientId, String secret, LatLng ll, String filter) {
+    public FourSquareTask(String clientId, String secret, LatLng ll, String filter) {
         mPlaces = new ArrayList<>();
         mLocation = ll;
 

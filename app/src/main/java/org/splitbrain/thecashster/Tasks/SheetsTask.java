@@ -1,4 +1,4 @@
-package org.splitbrain.thecashster.sheets;
+package org.splitbrain.thecashster.Tasks;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,7 +21,6 @@ import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import com.google.api.services.sheets.v4.model.UpdateSpreadsheetPropertiesRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import org.splitbrain.thecashster.AsyncHandlerTask;
 import org.splitbrain.thecashster.EntryActivity;
 import org.splitbrain.thecashster.model.Transaction;
 
