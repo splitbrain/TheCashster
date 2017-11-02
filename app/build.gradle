@@ -1,14 +1,34 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
+/**
+ * we use the number of commits as versionCode
+ *
+ * @link https://plus.google.com/u/0/+MarcReichelt/posts/BX2he4vSJaM
+ */
+static def getNumberOfGitCommits() {
+    return 'git rev-list --count HEAD'.execute().text.trim().toInteger()
+}
+
+/**
+ * we make the git hash available in the app
+ *
+ * @link https://plus.google.com/u/0/+MarcReichelt/posts/BX2he4vSJaM
+ */
+static def getCurrentGitHash() {
+    return 'git rev-parse --short HEAD'.execute().text.trim()
+}
+
+
 android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "org.splitbrain.thecashster"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
+        versionCode getNumberOfGitCommits()
         versionName "1.0"
+        resValue "string", "app_git_hash", getCurrentGitHash()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

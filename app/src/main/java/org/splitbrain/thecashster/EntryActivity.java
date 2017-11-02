@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -128,7 +129,6 @@ public class EntryActivity extends AppCompatActivity implements
         mCredential = GoogleAccountCredential.usingOAuth2(
                 this, Arrays.asList(SCOPES)
         ).setBackOff(new ExponentialBackOff());
-
 
     }
 
