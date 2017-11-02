@@ -25,6 +25,8 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
+import static java.lang.Math.round;
+
 /**
  * This adapter manages the list of available places
  * <p>
@@ -152,10 +154,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      */
     private void loadLocalPlaces(Location location) {
         LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-        int radius = 500;
-        if (location.hasAccuracy()) {
-            radius = 250;
-        }
+        int radius = round(location.getAccuracy() * 15);
         LatLngBounds bnd = toBounds(ll, radius);
 
         Realm realm = Realm.getDefaultInstance();
