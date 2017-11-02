@@ -21,6 +21,7 @@ import org.splitbrain.thecashster.model.Place;
 
 import java.util.ArrayList;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -85,22 +86,23 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      *
      * @param location the user's current location as returned by Google Play Services
      * @param filter   the currently entered search string
-     * @todo break down into smaller internal pieces
-     * @todo replace google places API with foursquare or Places search
      */
     void findNearbyPlaces(@Nullable Location location, String filter) {
         if (location == null) {
             Toast.makeText(mContext, "Sorry, no location available",
                     Toast.LENGTH_SHORT).show();
-
             return;
         }
 
-        // location.hasAccuracy() could define the bounding box size 250 vs 500m
-
         // load our own places here
-        loadLocalPlaces(location);
+        loadLocalPlaces(location, filter);
+        loadFoursquarePlaces(location, filter);
+    }
 
+    /**
+     * Load matching nearby places from foursquare
+     */
+    private void loadFoursquarePlaces(Location location, String filter) {
         LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
         FourSquareTask fst = new FourSquareTask(
                 mContext.getResources().getString(R.string.FourSquareClientID),
@@ -115,45 +117,15 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
             }
         });
         fst.execute();
-
-
-/*
-        // fixme we probably want to replace this with the PlacesSearch API or the foursquare API
-        PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(mContext, null);
-        Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(null);
-        placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    Place place = new Place();
-                    place.setName(placeLikelihood.getPlace().getName().toString());
-                    place.setLatLng(placeLikelihood.getPlace().getLatLng());
-                    place.setAddress(placeLikelihood.getPlace().getAddress().toString());
-                    place.setFoursquare(placeLikelihood.getPlace().getId());
-
-                    if (mItems.contains(place)) {
-                        Log.d("me", "place already there");
-                    } else {
-                        Log.d("me", "place new");
-                        add(place);
-                    }
-                }
-                likelyPlaces.release();
-            }
-        });
-        */
     }
 
     /**
      * Find locally stored places nearby
      * <p>
-     * Adds the result ordered by lastUsed date. NEarby places are found through a bounding box
+     * Adds the result ordered by lastUsed date. Nearby places are found through a bounding box
      * based on the locations accuracy
-     *
-     * @param location the current location
      */
-    private void loadLocalPlaces(Location location) {
+    private void loadLocalPlaces(Location location, String filter) {
         LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
         int radius = round(location.getAccuracy() * 15);
         LatLngBounds bnd = toBounds(ll, radius);
@@ -162,6 +134,9 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         RealmQuery<Place> query = realm.where(Place.class);
         query.between("lat", bnd.southwest.latitude, bnd.northeast.latitude);
         query.between("lon", bnd.southwest.longitude, bnd.northeast.longitude);
+        if (filter.length() > 0) {
+            query.contains("name", filter, Case.INSENSITIVE);
+        }
 
         RealmResults<Place> results = query.findAllSorted("lastused", Sort.DESCENDING);
         for (Place result : results) {
@@ -228,6 +203,9 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         return rowView;
     }
 
+    /**
+     * Remove all items and reset the selected item
+     */
     @Override
     public void clear() {
         super.clear();
