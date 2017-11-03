@@ -22,6 +22,8 @@ import org.splitbrain.thecashster.Tasks.FourSquareTask;
 import org.splitbrain.thecashster.model.Place;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
 
 import io.realm.Case;
 import io.realm.Realm;
@@ -227,9 +229,22 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         return rowView;
     }
 
-    /**
-     * Remove all items and reset the selected item
-     */
+    // region Overrides
+
+    @Override
+    public void addAll(@NonNull Collection<? extends Place> collection) {
+        for(Place x : collection) {
+            add(x);
+        }
+    }
+
+    @Override
+    public void add(@Nullable Place object) {
+        if(object == null) return;
+        if(mItems.contains(object)) return;
+        super.add(object);
+    }
+
     @Override
     public void clear() {
         super.clear();
@@ -241,4 +256,6 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         super.remove(object);
         mSelected = -1;
     }
+
+    // endregion
 }
