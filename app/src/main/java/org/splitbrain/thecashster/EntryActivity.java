@@ -2,11 +2,17 @@ package org.splitbrain.thecashster;
 
 import android.Manifest;
 import android.accounts.AccountManager;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.RectEvaluator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -30,9 +36,9 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.sheets.v4.SheetsScopes;
 
+import org.splitbrain.thecashster.Tasks.SheetsTask;
 import org.splitbrain.thecashster.model.Place;
 import org.splitbrain.thecashster.model.Transaction;
-import org.splitbrain.thecashster.Tasks.SheetsTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +86,8 @@ public class EntryActivity extends AppCompatActivity implements
     View vLayoutNumberPad;
     @BindView(R.id.activityEntry)
     View vActivityEntry;
-
+    @BindView(R.id.listPlaces)
+    ListView mListView;
 
     /**
      * Initialize the activity
@@ -92,12 +99,11 @@ public class EntryActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
 
         // attach adapter to our list view
-        final ListView listview = findViewById(R.id.listPlaces);
         mAdapter = new PlacesAdapter(this, new ArrayList<Place>());
-        listview.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
         ListViewHandler lvh = new ListViewHandler();
-        listview.setOnItemClickListener(lvh);
-        listview.setOnItemLongClickListener(lvh);
+        mListView.setOnItemClickListener(lvh);
+        mListView.setOnItemLongClickListener(lvh);
 
         // pull to refresh
         final SwipeRefreshLayout swipeRefresh = findViewById(R.id.swipeRefresh);
@@ -180,10 +186,66 @@ public class EntryActivity extends AppCompatActivity implements
         updateAmountView();
     }
 
+    /**
+     * Open about activity
+     */
     public void onMenuButtonPress(View v) {
         Intent intent = new Intent(this, AboutActivity.class);
         intent.putExtra("location", mLastLocation);
         startActivity(intent);
+    }
+
+    /**
+     * Show Money animation
+     */
+    private void showAnimation() {
+        final Drawable d = getResources().getDrawable(R.drawable.check);
+
+        // center of the list view
+        int cx = mListView.getMeasuredWidth() / 2;
+        int cy = mListView.getMeasuredHeight() / 2;
+
+        // start with full opacity and at the center
+        d.setBounds(cx, cy, cx, cy);
+        d.setAlpha(255);
+        d.setTint(getResources().getColor(R.color.colorPrimaryLight));
+
+        // add overlay
+        mListView.getOverlay().add(d);
+
+        // final size
+        final int scale = 3;
+        Rect r = new Rect(
+                cx + (cx * -1 * scale),
+                cy + (cx * -1 * scale),
+                cx + (cx * scale),
+                cy + (cx * scale));
+
+        // animate
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(d,
+                PropertyValuesHolder.ofObject("bounds", new RectEvaluator(), r),
+                PropertyValuesHolder.ofInt("alpha", 0)
+        );
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mListView.getOverlay().remove(d);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animator.setDuration(1000);
+        animator.start();
     }
 
     /**
@@ -209,6 +271,8 @@ public class EntryActivity extends AppCompatActivity implements
             }
             return;
         }
+
+        showAnimation();
 
         // new Transaction with attached place
         Transaction tx = new Transaction(getAmount(), place);
