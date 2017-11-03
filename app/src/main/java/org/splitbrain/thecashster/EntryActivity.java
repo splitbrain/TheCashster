@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -491,11 +492,15 @@ public class EntryActivity extends AppCompatActivity implements
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    item.deleteFromRealm();
-                    realm.commitTransaction();
-                    mAdapter.remove(item);
+                    try {
+                        mAdapter.remove(item);
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+                        item.deleteFromRealm();
+                        realm.commitTransaction();
+                    } catch (IllegalStateException e) {
+                        Log.e(TAG, "Something went wrong when deleting the item", e);
+                    }
                     dialog.dismiss();
                 }
             });
