@@ -32,7 +32,7 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         WebView wv = findViewById(R.id.webview_about);
-        wv.loadUrl("file:///android_asset/about.html");
+        wv.loadUrl("file:///android_asset/README.html");
 
         TextView tv;
 

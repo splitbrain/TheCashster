@@ -19,6 +19,27 @@ static def getCurrentGitHash() {
     return 'git rev-parse --short HEAD'.execute().text.trim()
 }
 
+/**
+ * Render a markdown file via Github's API
+ *
+ * @param md the input file to render
+ * @param html the output file
+ * @return
+ */
+static def renderMarkdown(File md, File html) {
+    println("Rendering " + md.toString() + " to " + html.toString());
+    def process = [
+            'curl', '-sS',
+            '-X', 'POST',
+            '-H', 'Content-Type: text/x-markdown',
+            '--data-binary', '@' + md.toString(),
+            '-o', html.toString(),
+            'https://api.github.com/markdown/raw'
+    ].execute()
+    process.waitFor()
+    println process.err.text
+
+}
 
 android {
     def props = new Properties()
@@ -35,6 +56,7 @@ android {
         resValue "string", "FourSquareClientID", props.getProperty("FourSquareClientID")
         resValue "string", "FourSquareClientSecret", props.getProperty("FourSquareClientSecret")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        renderMarkdown(rootProject.file("README.md"), rootProject.file("app/src/main/assets/README.html"))
     }
     buildTypes {
         release {

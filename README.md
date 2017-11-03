@@ -10,7 +10,7 @@ The goal is to keep expense tracking as simple as possible:
 
 There are no categories to pick, no budgets to create or anything complicated. All your expenses are logged to a Google Sheets spreadsheet - that's where you can do whatever complicated reporting you want.
 
-TheCashster is available on Google Play and on Github.
+TheCashster is available on [Google Play](https://play.google.com/store/apps/details?id=org.splitbrain.thecashster) and on [Github](https://github.com/splitbrain/TheCashster).
 
 ## Permissions
 
