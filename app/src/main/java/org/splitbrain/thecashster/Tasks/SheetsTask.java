@@ -105,6 +105,7 @@ public class SheetsTask extends AsyncHandlerTask<Void, Void> {
         }
         transactions.deleteAllFromRealm();
         realm.commitTransaction();
+        realm.close();
 
         append(docId, values);
     }

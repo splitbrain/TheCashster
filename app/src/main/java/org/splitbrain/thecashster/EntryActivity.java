@@ -283,6 +283,7 @@ public class EntryActivity extends AppCompatActivity implements
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(tx);
         realm.commitTransaction();
+        realm.close();
 
         // start new task for transferring the data to Google Sheets
         startSheetsSync();
@@ -493,15 +494,16 @@ public class EntryActivity extends AppCompatActivity implements
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    Realm realm = Realm.getDefaultInstance();
                     try {
                         mAdapter.remove(item);
-                        Realm realm = Realm.getDefaultInstance();
                         realm.beginTransaction();
                         item.deleteFromRealm();
                         realm.commitTransaction();
                     } catch (IllegalStateException e) {
                         Log.e(TAG, "Something went wrong when deleting the item", e);
                     }
+                    realm.close();
                     dialog.dismiss();
                 }
             });

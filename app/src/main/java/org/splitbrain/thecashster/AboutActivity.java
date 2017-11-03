@@ -46,6 +46,7 @@ public class AboutActivity extends AppCompatActivity {
         tv = findViewById(R.id.textAboutNumberPlaces);
         Realm realm = Realm.getDefaultInstance();
         tv.setText(String.valueOf(realm.where(Place.class).count()));
+        realm.close();
 
         Location ll = getIntent().getParcelableExtra("location");
         tv = findViewById(R.id.textAboutLocation);

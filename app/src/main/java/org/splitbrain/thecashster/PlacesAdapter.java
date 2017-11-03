@@ -148,6 +148,8 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
             result.setDistanceFrom(ll);
             add(result);
         }
+
+        realm.close();
     }
 
     /**
