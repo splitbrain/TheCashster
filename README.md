@@ -52,3 +52,20 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Privacy Policy
+
+This App uses the Google Play Services to access your device's last location and to connect to your Google Sheets account. This app has no access to any other private information.
+
+Crash and usage data may be transferred to Google.
+
+Your location is sent to Foursquare to get a list of nearby places. No personal information is sent with that request.
+
+None of your personal identifiable data is transferred to to me, the author of the application. I may receive anonymous usage statistics through Google.
+
+Please refer to the privacy policies of
+
+  * [Google](https://www.google.com/policies/privacy/)
+  * [Foursquare](https://foursquare.com/legal/privacy)
+
+This policy will be updated when necessary. 
