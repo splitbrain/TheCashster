@@ -288,6 +288,7 @@ public class EntryActivity extends AppCompatActivity implements
         startSheetsSync();
 
         // reset the interface
+        place.setLocal(true);
         mAdapter.selectItem(-1);
         mAmount = "";
         updateAmountView();
