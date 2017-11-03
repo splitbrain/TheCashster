@@ -22,6 +22,7 @@ import com.google.api.services.sheets.v4.model.UpdateSpreadsheetPropertiesReques
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import org.splitbrain.thecashster.EntryActivity;
+import org.splitbrain.thecashster.R;
 import org.splitbrain.thecashster.model.Transaction;
 
 import java.io.IOException;
@@ -42,7 +43,6 @@ public class SheetsTask extends AsyncHandlerTask<Void, Void> {
     private final String TAG = this.getClass().getSimpleName();
     // the preference that holds our google sheets document ID
     public static final String PREF_SHEET_ID = "sheetID";
-    private static final String SHEET_TITLE = "TheCashster";
 
     private com.google.api.services.sheets.v4.Sheets mService = null;
     private Exception mLastError = null;
@@ -167,6 +167,7 @@ public class SheetsTask extends AsyncHandlerTask<Void, Void> {
         Context context = mContextRef.get();
         if (context == null) throw new IOException("no context available");
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String sheetTitle = context.getString(R.string.app_name);
 
         // get doc from preferences and check it still exists
         String docID = preferences.getString(PREF_SHEET_ID, null);
@@ -194,7 +195,7 @@ public class SheetsTask extends AsyncHandlerTask<Void, Void> {
                                 new UpdateSpreadsheetPropertiesRequest()
                                         .setProperties(
                                                 new SpreadsheetProperties()
-                                                        .setTitle(SHEET_TITLE)
+                                                        .setTitle(sheetTitle)
                                         )
                                         .setFields("title")
                         )
