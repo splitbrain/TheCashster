@@ -178,7 +178,7 @@ public class EntryActivity extends AppCompatActivity implements
                 if (mAmount.length() < 8) {
                     mAmount = mAmount.concat(key);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sorry, that's just too much",
+                    Toast.makeText(getApplicationContext(), R.string.err_toomuch,
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -257,17 +257,17 @@ public class EntryActivity extends AppCompatActivity implements
 
         // check amount and place first
         if (getAmount() == 0.0) {
-            Toast.makeText(getApplicationContext(), "No amount set",
+            Toast.makeText(getApplicationContext(), R.string.err_noamount,
                     Toast.LENGTH_SHORT).show();
             return;
         }
         if (place == null) {
             mAdapter.selectItem(0);
             if (mAdapter.getSelected() == null) {
-                Toast.makeText(getApplicationContext(), "No place selected",
+                Toast.makeText(getApplicationContext(), R.string.err_noplace,
                         Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getApplicationContext(), "First place selected, click done again to confirm",
+                Toast.makeText(getApplicationContext(), R.string.err_firstplace,
                         Toast.LENGTH_SHORT).show();
             }
             return;
@@ -336,7 +336,7 @@ public class EntryActivity extends AppCompatActivity implements
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
                     this,
-                    "The contacts permission is needed to authenticate your spreadsheet account",
+                    getString(R.string.perm_contacts),
                     REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS
             );
@@ -431,7 +431,7 @@ public class EntryActivity extends AppCompatActivity implements
         if (!EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             EasyPermissions.requestPermissions(
                     this,
-                    "Location access is needed to find nearby places",
+                    getString(R.string.perm_location),
                     REQUEST_FINE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
@@ -485,12 +485,13 @@ public class EntryActivity extends AppCompatActivity implements
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
             final Place item = mAdapter.getItem(i);
+            if (item == null) return false;
             if (!item.isLocal()) return false;
 
             AlertDialog.Builder alert = new AlertDialog.Builder(EntryActivity.this);
-            alert.setTitle("Delete " + item.getName());
-            alert.setMessage("Are you sure you want to delete this place?");
-            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            alert.setTitle(getString(R.string.delete_title, item.getName()));
+            alert.setMessage(R.string.reallydel);
+            alert.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -510,7 +511,7 @@ public class EntryActivity extends AppCompatActivity implements
                     dialog.dismiss();
                 }
             });
-            alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            alert.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

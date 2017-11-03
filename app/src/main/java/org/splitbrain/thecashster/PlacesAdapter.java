@@ -28,7 +28,6 @@ import java.util.List;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmQuery;
-import io.realm.RealmResults;
 import io.realm.Sort;
 
 import static java.lang.Math.round;
@@ -93,7 +92,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      */
     void findNearbyPlaces(@Nullable Location location, String filter) {
         if (location == null) {
-            Toast.makeText(mContext, "Sorry, no location available",
+            Toast.makeText(mContext, R.string.err_nolocation,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -196,6 +195,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            assert inflater != null;
             rowView = inflater.inflate(R.layout.places_row, parent, false);
 
             ViewHolder viewHolder = new ViewHolder();

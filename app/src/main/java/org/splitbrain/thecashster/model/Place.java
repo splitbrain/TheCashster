@@ -35,7 +35,7 @@ public class Place extends RealmObject {
     private String category = "";
 
     @Ignore
-    private Boolean local = false;
+    private boolean local = false;
     @Ignore
     private int distance = 0;
     @Ignore
@@ -176,11 +176,12 @@ public class Place extends RealmObject {
         this.category = category;
     }
 
-    public Boolean isLocal() {
+    public boolean isLocal() {
         return local;
     }
 
-    public void setLocal(Boolean local) {
+    @SuppressWarnings("SameParameterValue")
+    public void setLocal(boolean local) {
         this.local = local;
     }
 

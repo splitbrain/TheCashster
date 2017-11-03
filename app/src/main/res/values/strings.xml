@@ -12,4 +12,15 @@
     <string name="about_docid">Google Docs ID:</string>
     <string name="about_places">Local Places:</string>
     <string name="about_location">Location:</string>
+    <string name="reallydel">Are you sure you want to delete this place?</string>
+    <string name="delete_title">Delete %1$s?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="perm_location">Location access is needed to find nearby places</string>
+    <string name="perm_contacts">The contacts permission is needed to authenticate your spreadsheet account</string>
+    <string name="err_noamount">No amount set</string>
+    <string name="err_noplace">No place selected</string>
+    <string name="err_firstplace">First place selected, click done again to confirm</string>
+    <string name="err_toomuch">Sorry, that\'s just too much</string>
+    <string name="err_nolocation">Sorry, no location available</string>
 </resources>
