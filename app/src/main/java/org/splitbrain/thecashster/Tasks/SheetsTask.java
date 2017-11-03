@@ -41,7 +41,7 @@ public class SheetsTask extends AsyncHandlerTask<Void, Void> {
     // for logging
     private final String TAG = this.getClass().getSimpleName();
     // the preference that holds our google sheets document ID
-    private static final String PREF_SHEET_ID = "sheetID";
+    public static final String PREF_SHEET_ID = "sheetID";
     private static final String SHEET_TITLE = "TheCashster";
 
     private com.google.api.services.sheets.v4.Sheets mService = null;

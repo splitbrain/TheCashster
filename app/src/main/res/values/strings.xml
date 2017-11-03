@@ -8,4 +8,8 @@
     <string name="done">Done</string>
     <string name="about">About</string>
     <string name="saved_result">saved result</string>
+    <string name="about_version">Version:</string>
+    <string name="about_docid">Google Docs ID:</string>
+    <string name="about_places">Local Places:</string>
+    <string name="about_location">Location:</string>
 </resources>

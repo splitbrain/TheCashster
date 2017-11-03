@@ -182,6 +182,7 @@ public class EntryActivity extends AppCompatActivity implements
 
     public void onMenuButtonPress(View v) {
         Intent intent = new Intent(this, AboutActivity.class);
+        intent.putExtra("location", mLastLocation);
         startActivity(intent);
     }
 
