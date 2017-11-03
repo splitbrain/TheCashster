@@ -23,7 +23,6 @@ import org.splitbrain.thecashster.model.Place;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 import io.realm.Case;
 import io.realm.Realm;
@@ -155,7 +154,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      * Adds a custom place
      */
     private void addCustomPlace(Location ll, String filter) {
-        if(filter.length() == 0) return;
+        if (filter.length() == 0) return;
 
         Place custom = new Place();
         custom.setCategory("Custom");
@@ -186,16 +185,26 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
 
     /**
      * Create the view for each row of places
-     *
-     * @todo implement viewholder pattern
      */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.places_row, parent, false);
+        View rowView = convertView;
+        if (rowView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = inflater.inflate(R.layout.places_row, parent, false);
 
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.first = rowView.findViewById(R.id.firstLine);
+            viewHolder.second = rowView.findViewById(R.id.secondLine);
+            viewHolder.radio = rowView.findViewById(R.id.radioSelect);
+            viewHolder.star = rowView.findViewById(R.id.imageStar);
+
+            rowView.setTag(viewHolder);
+        }
+
+        ViewHolder holder = (ViewHolder) rowView.getTag();
         Place item = getItem(position);
         assert item != null;
 
@@ -210,38 +219,41 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
                     .concat("m");
         }
 
-        TextView first = rowView.findViewById(R.id.firstLine);
-        first.setText(item.getName());
-
-        TextView second = rowView.findViewById(R.id.secondLine);
-        second.setText(info);
-
-        RadioButton radio = rowView.findViewById(R.id.radioSelect);
-        radio.setChecked(mSelected == position);
-
-        ImageView star = rowView.findViewById(R.id.imageStar);
+        holder.first.setText(item.getName());
+        holder.second.setText(info);
+        holder.radio.setChecked(mSelected == position);
         if (item.isLocal()) {
-            star.setVisibility(View.VISIBLE);
+            holder.star.setVisibility(View.VISIBLE);
         } else {
-            star.setVisibility(View.GONE);
+            holder.star.setVisibility(View.GONE);
         }
 
         return rowView;
+    }
+
+    /**
+     * Hold the views for a row item
+     */
+    static class ViewHolder {
+        TextView first;
+        TextView second;
+        RadioButton radio;
+        ImageView star;
     }
 
     // region Overrides
 
     @Override
     public void addAll(@NonNull Collection<? extends Place> collection) {
-        for(Place x : collection) {
+        for (Place x : collection) {
             add(x);
         }
     }
 
     @Override
     public void add(@Nullable Place object) {
-        if(object == null) return;
-        if(mItems.contains(object)) return;
+        if (object == null) return;
+        if (mItems.contains(object)) return;
         super.add(object);
     }
 
