@@ -112,6 +112,13 @@ public class Place extends RealmObject {
         return round(earthRadius * c * 1000);
     }
 
+    /**
+     * set the last used date to now
+     */
+    public void updateLastUsed() {
+        lastused = new Date();
+    }
+
     // region Default Setter/Getter
 
     public String getId() {

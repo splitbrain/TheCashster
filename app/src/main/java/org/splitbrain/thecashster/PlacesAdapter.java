@@ -112,6 +112,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
                 mContext.getResources().getString(R.string.FourSquareClientID),
                 mContext.getResources().getString(R.string.FourSquareClientSecret),
                 ll,
+                calculateRadius(location),
                 filter
         );
         fst.setOnTaskCompleted(new AsyncHandlerTask.OnTaskCompleted() {
@@ -131,8 +132,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      */
     private void loadLocalPlaces(Location location, String filter) {
         LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-        int radius = round(location.getAccuracy() * 15);
-        LatLngBounds bnd = toBounds(ll, radius);
+        LatLngBounds bnd = toBounds(ll, calculateRadius(location));
 
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<Place> query = realm.where(Place.class);
@@ -150,6 +150,13 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
         }
 
         realm.close();
+    }
+
+    /**
+     * Calculate the radius based on the current accuracy
+     */
+    private int calculateRadius(Location location) {
+        return round(location.getAccuracy() * 15);
     }
 
     /**

@@ -23,4 +23,5 @@
     <string name="err_firstplace">First place selected, click done again to confirm</string>
     <string name="err_toomuch">Sorry, that\'s just too much</string>
     <string name="err_nolocation">Sorry, no location available</string>
+    <string name="about_tx">Pending transactions</string>
 </resources>

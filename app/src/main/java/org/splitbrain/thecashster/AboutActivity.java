@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.splitbrain.thecashster.Tasks.SheetsTask;
 import org.splitbrain.thecashster.model.Place;
+import org.splitbrain.thecashster.model.Transaction;
 
 import io.realm.Realm;
 
@@ -43,9 +44,14 @@ public class AboutActivity extends AppCompatActivity {
         tv.setText(PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(SheetsTask.PREF_SHEET_ID, "<none>"));
 
-        tv = findViewById(R.id.textAboutNumberPlaces);
         Realm realm = Realm.getDefaultInstance();
+
+        tv = findViewById(R.id.textAboutNumberPlaces);
         tv.setText(String.valueOf(realm.where(Place.class).count()));
+
+        tv = findViewById(R.id.textAboutPendingTx);
+        tv.setText(String.valueOf(realm.where(Transaction.class).count()));
+
         realm.close();
 
         Location ll = getIntent().getParcelableExtra("location");

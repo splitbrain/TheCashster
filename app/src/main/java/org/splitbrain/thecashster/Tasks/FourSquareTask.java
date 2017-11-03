@@ -38,9 +38,10 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
      * @param clientId Foursquare API client ID
      * @param secret Foursquare API client secret
      * @param ll The current location
+     * @param radius The search radius to use
      * @param filter The wanted text filter
      */
-    public FourSquareTask(String clientId, String secret, LatLng ll, String filter) {
+    public FourSquareTask(String clientId, String secret, LatLng ll, int radius, String filter) {
         mPlaces = new ArrayList<>();
         mLocation = ll;
 
@@ -56,7 +57,7 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
                 .appendQueryParameter("ll", ll.latitude + "," + ll.longitude)
                 .appendQueryParameter("query", filter)
                 .appendQueryParameter("limit", "25")
-                .appendQueryParameter("radius", "1250")
+                .appendQueryParameter("radius", String.valueOf(radius))
                 .build();
 
         try {

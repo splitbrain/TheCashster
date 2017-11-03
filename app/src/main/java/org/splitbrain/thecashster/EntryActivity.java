@@ -276,6 +276,7 @@ public class EntryActivity extends AppCompatActivity implements
         showAnimation();
 
         // new Transaction with attached place
+        place.updateLastUsed();
         Transaction tx = new Transaction(getAmount(), place);
 
         // save place and transaction
