@@ -23,6 +23,7 @@ import org.splitbrain.thecashster.model.Place;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import io.realm.Case;
 import io.realm.Realm;
@@ -142,7 +143,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
             query.contains("name", filter, Case.INSENSITIVE);
         }
 
-        RealmResults<Place> results = query.findAllSorted("lastused", Sort.DESCENDING);
+        List<Place> results = realm.copyFromRealm(query.findAllSorted("lastused", Sort.DESCENDING));
         for (Place result : results) {
             result.setLocal(true);
             result.setDistanceFrom(ll);

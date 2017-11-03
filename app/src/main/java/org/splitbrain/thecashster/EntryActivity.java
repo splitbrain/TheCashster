@@ -498,7 +498,10 @@ public class EntryActivity extends AppCompatActivity implements
                     try {
                         mAdapter.remove(item);
                         realm.beginTransaction();
-                        item.deleteFromRealm();
+                        realm.where(Place.class)
+                                .equalTo("id", item.getId())
+                                .findAll()
+                                .deleteAllFromRealm();
                         realm.commitTransaction();
                     } catch (IllegalStateException e) {
                         Log.e(TAG, "Something went wrong when deleting the item", e);
