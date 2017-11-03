@@ -25,12 +25,21 @@ import java.util.ArrayList;
 
 public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
 
+    private final String TAG = this.getClass().getSimpleName();
+
     private Exception mLastError = null;
     private URL mURL;
     private ArrayList<Place> mPlaces;
     private LatLng mLocation;
 
-
+    /**
+     * Ask Foursquare for nearby places
+     *
+     * @param clientId Foursquare API client ID
+     * @param secret Foursquare API client secret
+     * @param ll The current location
+     * @param filter The wanted text filter
+     */
     public FourSquareTask(String clientId, String secret, LatLng ll, String filter) {
         mPlaces = new ArrayList<>();
         mLocation = ll;
@@ -50,13 +59,11 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
                 .appendQueryParameter("radius", "1250")
                 .build();
 
-        Log.e("URL", uri.toString());
-
         try {
             mURL = new URL(uri.toString());
         } catch (MalformedURLException e) {
             // should not happen
-            e.printStackTrace();
+            Log.e(TAG, "We failed to create a proper URL", e);
         }
     }
 
@@ -73,6 +80,9 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
         return this;
     }
 
+    /**
+     * Access the foursquare API and get the response body
+     */
     private String fetchData() throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         HttpURLConnection urlConnection = (HttpURLConnection) mURL.openConnection();
@@ -90,9 +100,10 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
         }
     }
 
+    /**
+     * Create the list of places from the response
+     */
     private void parseData(String data) throws JSONException {
-        Log.e("JSON", data);
-
         JSONObject json = (JSONObject) new JSONTokener(data).nextValue();
 
         JSONArray venues = json.getJSONObject("response").getJSONArray("venues");
@@ -117,6 +128,9 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
 
     }
 
+    /**
+     * Getter to access the places once the task complete
+     */
     public ArrayList<Place> getPlaces() {
         return mPlaces;
     }
@@ -125,7 +139,9 @@ public class FourSquareTask extends AsyncHandlerTask<Void, Void> {
     protected void onCancelled() {
 
         if (mLastError != null) {
-            mLastError.printStackTrace();
+            Log.e(TAG, "The Task was cancelled because of an error", mLastError);
+        } else {
+            Log.e(TAG, "The Task was cacelled");
         }
     }
 }
