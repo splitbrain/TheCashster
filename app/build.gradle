@@ -58,12 +58,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         renderMarkdown(rootProject.file("README.md"), rootProject.file("app/src/main/assets/README.html"))
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
     signingConfigs {
         release {
             storeFile file(System.getProperty("user.home") + "/Dropbox/AndroidKeystore/android.keystore")
@@ -71,6 +66,14 @@ android {
             keyAlias props.getProperty("keyAlias")
             keyPassword props.getProperty("keyAliasPassword")
 
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
