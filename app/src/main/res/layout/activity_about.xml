@@ -61,6 +61,8 @@
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
                 android:textIsSelectable="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:onClick="onDocIDClick"
                 tools:text="fafasdfasfdasdfasakkdjkjasdkfjasdkljf" />
 
             <TextView

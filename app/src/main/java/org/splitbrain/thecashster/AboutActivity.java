@@ -1,11 +1,15 @@
 package org.splitbrain.thecashster;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -41,6 +45,7 @@ public class AboutActivity extends AppCompatActivity {
         tv.setText(BuildConfig.VERSION_NAME + " [" + getString(R.string.app_git_hash) + "]");
 
         tv = findViewById(R.id.textAboutDocId);
+        tv.setPaintFlags(tv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tv.setText(PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(SheetsTask.PREF_SHEET_ID, "<none>"));
 
@@ -59,6 +64,16 @@ public class AboutActivity extends AppCompatActivity {
         tv.setText(ll.getLatitude() + "," + ll.getLongitude() + " (±" + ll.getAccuracy() + "m)");
     }
 
+    public void onDocIDClick(View v) {
+        TextView tv = (TextView) v;
+        String docid = tv.getText().toString();
+        if(docid.isEmpty()) return;
+
+        String url = "https://docs.google.com/spreadsheets/d/" + docid;
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
 
     /**
      * finish the activity when the up button it pressed
