@@ -328,11 +328,15 @@ public class EntryActivity extends AppCompatActivity implements
             if (accountName != null) {
                 // account has been set, retry the sync task
                 mCredential.setSelectedAccountName(accountName);
-                startSheetsSync();
-            } else {
-                // Start a dialog from which the user can choose an account
-                startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+                // check if stored account name is correct
+                if(mCredential.getSelectedAccountName() != null) {
+                    startSheetsSync();
+                    return;
+                }
             }
+
+            // Start a dialog from which the user can choose an account
+            startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
