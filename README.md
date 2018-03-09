@@ -1,8 +1,8 @@
 # TheCashster
 
 TheCashster is a simple Expense tracking software for Android. It is meant as a companion to [TheBankster](https://github.com/splitbrain/TheBankster) but should work fine alone.
- 
-The goal is to keep expense tracking as simple as possible: 
+
+The goal is to keep expense tracking as simple as possible:
 
 1) pick the place you're at
 2) enter the amount you spent
@@ -34,12 +34,12 @@ If you can't find what you're looking for, use the search at the top of the scre
 ## Google Sheets
 
 The moment you save your first expense, TheCashster will create a new [Google Sheets](https://docs.google.com/spreadsheets/) spreadsheet for you. Your installation is then associated with this spreadsheet and all expenses will be logged to it.
-  
+
 Because the spreadsheet is identified by an internal ID you're free to rename or move it. You can also edit the formatting, rename the column headers or add additional sheets. You can safely remove rows if you accidentally tracked a wrong expense.
 
 You should however not change the order of the columns and you have to keep in mind that data is tracked on the very first sheet of the document.
 
-There is currently no way to associate TheBankster with an existing spreadshee. This means whenever you reinstall the app it will create a new spreadsheet and there is no way to have the app on two devices track to the same spreadsheet. Support for that might come later.
+There is currently no way to associate TheBankster with an existing spreadsheet. This means whenever you reinstall the app it will create a new spreadsheet and there is no way to have the app on two devices track to the same spreadsheet. Support for that might come later.
 
 ## License
 
@@ -68,4 +68,4 @@ Please refer to the privacy policies of
   * [Google](https://www.google.com/policies/privacy/)
   * [Foursquare](https://foursquare.com/legal/privacy)
 
-This policy will be updated when necessary. 
+This policy will be updated when necessary.
