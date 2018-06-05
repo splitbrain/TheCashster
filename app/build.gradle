@@ -51,7 +51,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode getNumberOfGitCommits()
-        versionName "1.0.1"
+        versionName "1.0.2"
         resValue "string", "app_git_hash", getCurrentGitHash()
         resValue "string", "FourSquareClientID", props.getProperty("FourSquareClientID")
         resValue "string", "FourSquareClientSecret", props.getProperty("FourSquareClientSecret")
