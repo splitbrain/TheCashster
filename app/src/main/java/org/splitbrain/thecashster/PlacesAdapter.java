@@ -75,9 +75,10 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      */
     @Nullable
     Place getSelected() {
+        if (mSelected < 0) return null;
         try {
             return getItem(mSelected);
-        } catch (java.lang.ArrayIndexOutOfBoundsException ignored) {
+        } catch (java.lang.IndexOutOfBoundsException ignored) {
             mSelected = -1;
             return null;
         }
