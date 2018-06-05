@@ -24,4 +24,5 @@
     <string name="err_toomuch">Sorry, that\'s just too much</string>
     <string name="err_nolocation">Sorry, no location available</string>
     <string name="about_tx">Pending transactions</string>
+    <string name="radius">Search radius increased by %1$d.</string>
 </resources>

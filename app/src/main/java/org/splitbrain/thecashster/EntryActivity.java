@@ -73,6 +73,7 @@ public class EntryActivity extends AppCompatActivity implements
     private String mAmount = "";
     private int mNeg = -1;
     private Location mLastLocation;
+    private int mAccuracy = 1;
 
     // google API clients
     private GoogleApiClient mGoogleApiClient;
@@ -99,6 +100,8 @@ public class EntryActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_entry);
         ButterKnife.bind(this);
 
+        mAccuracy = 1;
+
         // attach adapter to our list view
         mAdapter = new PlacesAdapter(this, new ArrayList<Place>());
         mListView.setAdapter(mAdapter);
@@ -111,6 +114,9 @@ public class EntryActivity extends AppCompatActivity implements
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mAccuracy++; // increase search radius
+                Toast.makeText(getApplicationContext(), getString(R.string.radius, mAccuracy),
+                        Toast.LENGTH_SHORT).show();
                 locationUpdate();
                 swipeRefresh.setRefreshing(false);
             }
@@ -329,7 +335,7 @@ public class EntryActivity extends AppCompatActivity implements
                 // account has been set, retry the sync task
                 mCredential.setSelectedAccountName(accountName);
                 // check if stored account name is correct
-                if(mCredential.getSelectedAccountName() != null) {
+                if (mCredential.getSelectedAccountName() != null) {
                     startSheetsSync();
                     return;
                 }
@@ -441,6 +447,7 @@ public class EntryActivity extends AppCompatActivity implements
                     Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            mLastLocation.setAccuracy(mLastLocation.getAccuracy() * mAccuracy);
         }
         updatePlaceView();
     }
@@ -450,8 +457,7 @@ public class EntryActivity extends AppCompatActivity implements
      */
     public void onSearchButtonClick(View v) {
         closeKeyboard();
-        mAdapter.clear();
-        mAdapter.findNearbyPlaces(mLastLocation, vTextSearch.getText().toString());
+        updatePlaceView();
     }
 
     /**

@@ -156,7 +156,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      * Calculate the radius based on the current accuracy
      */
     private int calculateRadius(Location location) {
-        return round(location.getAccuracy() * 15);
+        return round(location.getAccuracy() * 2);
     }
 
     /**

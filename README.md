@@ -31,6 +31,8 @@ You can delete locally stored ★ places by long pressing on them and confirm th
 
 If you can't find what you're looking for, use the search at the top of the screen. It is used to request places matching what you entered. You will also get the opportunity to simply create a local ★ place based on your input.
 
+By default the search for places is restricted to nearby locations. Swipe down the list to increase the search radius. Repeat to further increase the radius.
+
 ## Google Sheets
 
 The moment you save your first expense, TheCashster will create a new [Google Sheets](https://docs.google.com/spreadsheets/) spreadsheet for you. Your installation is then associated with this spreadsheet and all expenses will be logged to it.
