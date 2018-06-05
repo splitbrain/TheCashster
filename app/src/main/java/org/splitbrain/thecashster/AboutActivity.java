@@ -42,7 +42,10 @@ public class AboutActivity extends AppCompatActivity {
         TextView tv;
 
         tv = findViewById(R.id.textAboutVersion);
-        tv.setText(BuildConfig.VERSION_NAME + " [" + getString(R.string.app_git_hash) + "]");
+        tv.setText(BuildConfig.VERSION_NAME
+                + " [" + getString(R.string.app_git_hash) + "]"
+                + " " + BuildConfig.VERSION_CODE
+        );
 
         tv = findViewById(R.id.textAboutDocId);
         tv.setPaintFlags(tv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -67,7 +70,7 @@ public class AboutActivity extends AppCompatActivity {
     public void onDocIDClick(View v) {
         TextView tv = (TextView) v;
         String docid = tv.getText().toString();
-        if(docid.isEmpty()) return;
+        if (docid.isEmpty()) return;
 
         String url = "https://docs.google.com/spreadsheets/d/" + docid;
         Intent i = new Intent(Intent.ACTION_VIEW);
