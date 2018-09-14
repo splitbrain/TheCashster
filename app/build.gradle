@@ -43,7 +43,8 @@ static def renderMarkdown(File md, File html) {
 
 android {
     def props = new Properties()
-    props.load(new FileInputStream(System.getProperty("user.home") + "/Dropbox/AndroidKeystore/TheCashster.properties"))
+    //props.load(new FileInputStream(System.getProperty("user.home") + "/Dropbox/AndroidKeystore/TheCashster.properties"))
+    props.load(project.rootProject.file('TheCashster.properties').newDataInputStream())
 
     compileSdkVersion 26
     defaultConfig {
