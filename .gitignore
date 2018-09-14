@@ -9,3 +9,7 @@
 .externalNativeBuild
 
 app/src/main/assets/README.html
+
+\.idea/
+
+gradle/wrapper/gradle-wrapper\.properties
