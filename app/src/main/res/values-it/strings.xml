@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TheCashster</string>
+    <string name="btn_search">Cerca</string>
+    <string name="menu">Menu</string>
+    <string name="select_place">Seleziona luogo</string>
+    <string name="menu_about">Info</string>
+    <string name="backspace">canc</string>
+    <string name="done">Fatto</string>
+    <string name="about">Info</string>
+    <string name="saved_result">risultato salvato</string>
+    <string name="about_version">Versione</string>
+    <string name="about_docid">ID Google Docs:</string>
+    <string name="reallydel">Sei sicuro di voler eliminare questo luogo?</string>
+    <string name="about_location">Luogo:</string>
+    <string name="delete_title">Eliminare %1$s?</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
+    <string name="perm_location">Il permesso per accedere alla posizione è necessario per individuare i luoghi vicino a te</string>
+    <string name="perm_contacts">Il permesso per accedere ai contatti è necessario per autenticarti a Google Sheets</string>
+    <string name="err_noplace">Nessun luogo selezionato</string>
+    <string name="err_firstplace">Primo luogo selezionato, seleziona \"fatto\" per confermare</string>
+    <string name="err_toomuch">Scusa, è troppo</string>
+    <string name="err_nolocation">Spiacente, nessun luogo disponibile</string>
+    <string name="radius">Il raggio di ricerca è stato aumentato di %1$d.</string>
+    <string name="err_noamount">Importo non specificato</string>
+    <string name="about_places">Luoghi vicini:</string>
+    <string name="about_tx">Transazioni in coda</string>
+</resources>
